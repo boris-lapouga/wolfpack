@@ -1,124 +1,262 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import React from 'react';
+import {
+  Container,
+  Grid,
+  Typography,
+  Box,
+  Button,
+  TextField,
+} from '@mui/material';
+import { styled } from '@mui/system';
+import Link from 'next/link';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
+import Chip from '@mui/material/Chip';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
-const inter = Inter({ subsets: ['latin'] })
+const Header = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  height: 60,
+  paddingLeft: theme.spacing(2),
+  paddingRight: theme.spacing(2),
+}));
 
-export default function Home() {
+const MenuButton = styled(Box)({
+  width: 24,
+  height: 16,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+});
+
+const MenuLine = styled(Box)({
+  height: 2,
+  background: 'currentColor',
+});
+
+const SearchContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: theme.spacing(2),
+}));
+
+const GroupCard = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(2),
+  border: '1px solid #e0e0e0',
+  borderRadius: 4,
+  marginBottom: theme.spacing(2),
+}));
+
+const HowItWorks = styled(Box)(({ theme }) => ({
+  textAlign: 'center',
+  marginTop: theme.spacing(5),
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+}));
+
+const CircleIcon = styled(Box)(({ theme }) => ({
+  width: 64,
+  height: 64,
+  borderRadius: '50%',
+  background: 'white',
+  border: '3px solid lightgrey',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginBottom: theme.spacing(1),
+}));
+
+const IndexPage: React.FC = () => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <Container maxWidth={false} disableGutters>
+      <Header>
+        <Link href="/" passHref legacyBehavior>
+          <Typography
+            variant="h6"
+            component="a"
+            sx={{
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              color: 'text.primary',
+              textDecoration: 'none',
+            }}
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+            ThePack
+          </Typography>
+        </Link>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Link href="/sign-in" passHref legacyBehavior>
+            <Typography
+              component="a"
+              sx={{
+                marginRight: 2,
+                cursor: 'pointer',
+                color: 'text.primary',
+                textDecoration: 'none',
+              }}
+            >
+              Sign in
+            </Typography>
+          </Link>
+          <Typography>/</Typography>
+          <Link href="/sign-up" passHref legacyBehavior>
+            <Typography
+              component="a"
+              sx={{
+                marginLeft: 2,
+                marginRight: 4,
+                cursor: 'pointer',
+                color: 'text.primary',
+                textDecoration: 'none',
+              }}
+            >
+              Sign Up
+            </Typography>
+          </Link>
+          <MenuButton>
+            {Array.from({ length: 4 }).map((_, index) => (
+              <MenuLine key={index} />
+            ))}
+          </MenuButton>
+        </Box>
+      </Header>
+      <Container
+        maxWidth="md"
+        sx={{
+          mt: 5,
+          minHeight: 'calc(100vh - 60px)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography
+          variant="h5"
+          component="h5"
+          align="center"
+          gutterBottom
+          fontWeight="bold"
+        >
+          A WOLF IS ALWAYS STRONGER IN A PACK
+        </Typography>
+        <Typography
+          variant="h1"
+          component="h1"
+          align="center"
+          fontWeight="bold"
+        >
+          FIND YOURS
+        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            mt: 3,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              mt: 3,
+              width: '100%',
+              height: '60px',
+            }}
+          >
+            <TextField
+              label=""
+              variant="outlined"
+              placeholder="Find a pack to join... (or create one)"
+              fullWidth
+              sx={{ flexGrow: 1, mr: 1, height: '60px' }}
             />
-          </a>
-        </div>
-      </div>
+            <Box
+              sx={{
+                width: '60px',
+                height: '60px',
+                backgroundColor: 'black',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <SearchIcon sx={{ color: 'white' }} />
+            </Box>
+          </Box>
+        </Box>
+        <Box sx={{ mt: 5, textAlign: 'center' }}>
+          <Typography variant="subtitle1" color="textSecondary">
+            Search By Category
+          </Typography>
+          {[
+            'Psychology',
+            'Gaming',
+            'Movies',
+            'StartUps',
+            'Fishing',
+            'Music',
+            'Sports',
+            'Partying',
+            'Friendship',
+            'Misc',
+          ].map((category, index) => (
+            <Chip
+              key={index}
+              label={category}
+              component="a"
+              href={`/category/${category.toLowerCase()}`}
+              sx={{
+                m: 0.5,
+                backgroundColor: 'lightgrey',
+                color: '#ffffff',
+                textDecoration: 'none',
+                cursor: 'pointer',
+              }}
+            />
+          ))}
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
+          <Link href="/groups" passHref legacyBehavior>
+            <Typography
+              component="a"
+              sx={{
+                textDecoration: 'none',
+                color: 'text.secondary',
+                cursor: 'pointer',
+                display: 'block',
+                '&:hover': { textDecoration: 'underline' },
+              }}
+            >
+              Show all
+            </Typography>
+          </Link>
+        </Box>
+        <HowItWorks>
+          <CircleIcon>
+            <Link href="/how-it-works" passHref legacyBehavior>
+              <IconButton>
+                <PlayArrowIcon color="action" fontSize="large" />
+              </IconButton>
+            </Link>
+          </CircleIcon>
+          <Typography
+            variant="subtitle1"
+            component="p"
+            sx={{ color: 'text.secondary' }}
           >
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+            How It Works
+          </Typography>
+        </HowItWorks>
+      </Container>
+    </Container>
+  );
+};
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+export default IndexPage;
