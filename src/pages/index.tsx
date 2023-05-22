@@ -1,20 +1,19 @@
 import React from 'react';
-import {
-  Container,
-  Grid,
-  Typography,
-  Box,
-  Button,
-  TextField,
-} from '@mui/material';
+import { Container, Typography, Box, TextField } from '@mui/material';
 import { styled } from '@mui/system';
 import Link from 'next/link';
 import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import Chip from '@mui/material/Chip';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-
+import Drawer from '@mui/material/Drawer';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { SignInUpMenu } from '@/components/SignInUpMenu';
+import { DialogPopover } from '@/components/DialogPopover';
+import { VideoDialog } from '@/components/VideoDialog';
+import { SignInUpDialog } from '@/components/SignInUpDialog';
+import { SidebarMenu } from '@/components/SidebarMenu';
+import { CircleIcon } from '@/styled/CircleIcon';
 const Header = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
@@ -37,20 +36,6 @@ const MenuLine = styled(Box)({
   background: 'currentColor',
 });
 
-const SearchContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: theme.spacing(2),
-}));
-
-const GroupCard = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2),
-  border: '1px solid #e0e0e0',
-  borderRadius: 4,
-  marginBottom: theme.spacing(2),
-}));
-
 const HowItWorks = styled(Box)(({ theme }) => ({
   textAlign: 'center',
   marginTop: theme.spacing(5),
@@ -59,72 +44,97 @@ const HowItWorks = styled(Box)(({ theme }) => ({
   alignItems: 'center',
 }));
 
-const CircleIcon = styled(Box)(({ theme }) => ({
-  width: 64,
-  height: 64,
-  borderRadius: '50%',
-  background: 'white',
-  border: '3px solid lightgrey',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginBottom: theme.spacing(1),
-}));
-
 const IndexPage: React.FC = () => {
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [videoDialogOpen, setVideoDialogOpen] = React.useState(false);
+  const [signInUpDialogOpen, setSignInUpDialogOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen);
+  };
+
+  const closeDrawer = () => {
+    setDrawerOpen(false);
+  };
+
+  const handleVideoDialogOpen = () => {
+    setVideoDialogOpen(true);
+  };
+
+  const handleVideoDialogClose = () => {
+    setVideoDialogOpen(false);
+  };
+
+  const handleSignInUpDialogOpen = () => {
+    setSignInUpDialogOpen(true);
+  };
+
+  const handleSignInUpDialogClose = () => {
+    setSignInUpDialogOpen(false);
+  };
+
   return (
     <Container maxWidth={false} disableGutters>
       <Header>
-        <Link href="/" passHref legacyBehavior>
-          <Typography
-            variant="h6"
-            component="a"
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
+          <Link href="/" passHref legacyBehavior>
+            <Typography
+              variant="h6"
+              component="a"
+              sx={{
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                color: 'text.primary',
+                textDecoration: 'none',
+              }}
+            >
+              ThePack
+            </Typography>
+          </Link>
+          <Box
             sx={{
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              color: 'text.primary',
-              textDecoration: 'none',
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              flexGrow: 1,
             }}
           >
-            ThePack
-          </Typography>
-        </Link>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Link href="/sign-in" passHref legacyBehavior>
-            <Typography
-              component="a"
-              sx={{
-                marginRight: 2,
-                cursor: 'pointer',
-                color: 'text.primary',
-                textDecoration: 'none',
-              }}
-            >
-              Sign in
-            </Typography>
-          </Link>
-          <Typography>/</Typography>
-          <Link href="/sign-up" passHref legacyBehavior>
-            <Typography
-              component="a"
-              sx={{
-                marginLeft: 2,
-                marginRight: 4,
-                cursor: 'pointer',
-                color: 'text.primary',
-                textDecoration: 'none',
-              }}
-            >
-              Sign Up
-            </Typography>
-          </Link>
-          <MenuButton>
+            <SignInUpMenu onOpen={handleSignInUpDialogOpen} />
+          </Box>
+          <MenuButton onClick={handleDrawerToggle} sx={{ cursor: 'pointer' }}>
             {Array.from({ length: 4 }).map((_, index) => (
               <MenuLine key={index} />
             ))}
           </MenuButton>
         </Box>
       </Header>
+      <Drawer anchor="right" open={drawerOpen} onClose={closeDrawer}>
+        <Box sx={{ width: 250, p: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+            <IconButton onClick={closeDrawer}>
+              <ArrowForwardIcon />
+            </IconButton>
+          </Box>
+          <SidebarMenu handleSignInUpDialogOpen={handleSignInUpDialogOpen} />
+        </Box>
+      </Drawer>
+      <DialogPopover
+        content={<VideoDialog onClose={handleVideoDialogClose} />}
+        open={videoDialogOpen}
+        onClose={handleVideoDialogClose}
+      />
+      <DialogPopover
+        content={<SignInUpDialog onClose={handleSignInUpDialogClose} />}
+        open={signInUpDialogOpen}
+        onClose={handleSignInUpDialogClose}
+      />
       <Container
         maxWidth="md"
         sx={{
@@ -240,11 +250,13 @@ const IndexPage: React.FC = () => {
         </Box>
         <HowItWorks>
           <CircleIcon>
-            <Link href="/how-it-works" passHref legacyBehavior>
-              <IconButton>
-                <PlayArrowIcon color="action" fontSize="large" />
-              </IconButton>
-            </Link>
+            <IconButton onClick={handleVideoDialogOpen}>
+              <PlayArrowIcon
+                color="action"
+                fontSize="large"
+                sx={{ cursor: 'pointer' }}
+              />
+            </IconButton>
           </CircleIcon>
           <Typography
             variant="subtitle1"
